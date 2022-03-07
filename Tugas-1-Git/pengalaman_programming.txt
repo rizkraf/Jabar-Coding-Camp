@@ -1,0 +1,9 @@
+Pengalaman saya ketika mengenal programming adalah karena masuk Jurusan Rekayasa Perangkat Lunak di SMK. 
+Bahasa pertama yang diajarkan pertama kali di SMK adalah bahasa C++.
+
+Lalu saat beranjak naik kelas, saya pertama kali belajar HTML dan CSS. Disusul PHP untuk bahasa programnya.
+Karena saya lebih nyaman bekerja untuk bagian depan atau front-end, akhirnya saya memutuskan untuk belajar bahasa Javascript dasar.
+Di SMK saya pernah mengikuti lomba Web Design, walaupun tidak juara namun hal tersebut menjadi sebuah pengalaman.
+
+Beranjak di kelas 12, karena terkendala pandemi. Akhirnya saya tidak jadi pkl ke sebuah perusahaan dan akhirnya mengerjakan project website yang diberikan dari sekolah sebagai pengganti pkl.
+Dan mendekati kelulusan, saya mengerjakan project website pembayaran spp sebagai project yang diberikan sekolah untuk uji kompetensi/ujian praktek akhir. 
