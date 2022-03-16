@@ -29,7 +29,7 @@
                     set(param) {
                         let arr = param.split(" ");
                         this.firstName = arr[0];
-                        this.lastName = `${arr[1]} ${arr[2]}`;
+                        this.lastName = arr.slice(1).join(" ");
                     }
                 }
             },
