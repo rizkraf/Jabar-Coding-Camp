@@ -13,7 +13,7 @@
         <input type="text" v-model="search" placeholder="masukkan kata kunci">
         <ul>
             <li v-for="book in bookFilter">
-                {{ book.name }}
+                {{ book }}
             </li>
         </ul>
     </div>
@@ -26,17 +26,17 @@
             data: {
                 search: "",
                 books: [
-                    { name: "Kalkulus Dasar" },
-                    { name: "Fisika Dasar" },
-                    { name: "Aljabar Linear Elementer" },
-                    { name: "Aljabar Abstrak" },
-                    { name: "Aljabar Pemrograman" }
+                    "Kalkulus Dasar",
+                    "Fisika Dasar",
+                    "Aljabar Linear Elementer",
+                    "Aljabar Abstrak",
+                    "Aljabar Pemrograman"
                 ]
             },
             computed: {
                 bookFilter() {
                     return this.books.filter(book => {
-                        return book.name.toLowerCase().includes(this.search.toLowerCase());
+                        return book.toLowerCase().includes(this.search.toLowerCase());
                     });
                 }
             }
