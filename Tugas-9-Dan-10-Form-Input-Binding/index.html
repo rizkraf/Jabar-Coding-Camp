@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 9 & 10</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="search" placeholder="masukkan kata kunci">
+        <ul>
+            <li v-for="book in bookFilter">
+                {{ book.name }}
+            </li>
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                search: "",
+                books: [
+                    { name: "Kalkulus Dasar" },
+                    { name: "Fisika Dasar" },
+                    { name: "Aljabar Linear Elementer" },
+                    { name: "Aljabar Abstrak" },
+                    { name: "Aljabar Pemrograman" }
+                ]
+            },
+            computed: {
+                bookFilter() {
+                    return this.books.filter(book => {
+                        book.name.toLowerCase().includes(this.search.toLowerCase());
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
