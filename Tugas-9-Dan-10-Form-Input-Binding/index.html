@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -36,11 +36,11 @@
             computed: {
                 bookFilter() {
                     return this.books.filter(book => {
-                        book.name.toLowerCase().includes(this.search.toLowerCase());
+                        return book.name.toLowerCase().includes(this.search.toLowerCase());
                     });
                 }
             }
-        });
+        })
     </script>
 </body>
 
