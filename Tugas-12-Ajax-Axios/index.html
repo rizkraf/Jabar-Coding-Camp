@@ -28,9 +28,10 @@
         }
 
         .submit {
-            margin-top: 1rem;
+            margin-top: 0.5rem;
             padding: 0.5rem 0;
             cursor: pointer;
+            width: 100%;
         }
     </style>
 </head>
@@ -50,7 +51,13 @@
             <textarea name="address" ref="address" v-model="address"></textarea>
             <label for="no_hp">No HP</label>
             <input type="number" name="no_hp" ref="noHp" v-model="noHp">
-            <button class="submit" type="submit">Submit</button>
+            <div v-if="buttonStatus == 'submit'">
+                <button class="submit" type="submit">Submit</button>
+            </div>
+            <div v-else-if="buttonStatus == 'update'">
+                <button class="submit">Update</button>
+                <button class="submit" @click="cancelForm()">Cancel</button>
+            </div>
         </form>
 
         <table border="1">
@@ -67,7 +74,7 @@
                     <h4>No. HP</h4><span> {{ member.no_hp }} </span>
                 </td>
                 <td>
-                    <button>Edit</button>
+                    <button @click="editMember(member)">Edit</button>
                     <button @click="deleteMember(member.id)">Hapus</button>
                     <button>Upload Foto</button>
                 </td>
@@ -87,7 +94,8 @@
                 noHp: "",
                 errors: [],
                 members: [],
-                photoUrl: "http://demo-api-vue.sanbercloud.com"
+                photoUrl: "http://demo-api-vue.sanbercloud.com",
+                buttonStatus: "submit"
             },
             methods: {
                 validationForm: function () {
@@ -154,11 +162,13 @@
                         })
                 },
 
-                deleteMember: function(id) {
+                deleteMember: function (id) {
                     const config = {
                         method: "post",
                         url: `http://demo-api-vue.sanbercloud.com/api/member/${id}`,
-                        params: { _method: "DELETE" }
+                        params: {
+                            _method: "DELETE"
+                        }
                     }
 
                     axios(config)
@@ -169,6 +179,20 @@
                         .catch((error) => {
                             console.log(error)
                         })
+                },
+
+                editMember: function (member) {
+                    this.name = member.name
+                    this.address = member.address
+                    this.noHp = member.no_hp
+                    this.buttonStatus = "update"
+                },
+
+                cancelForm: function () {
+                    this.name = ""
+                    this.address = ""
+                    this.noHp = ""
+                    this.buttonStatus = "submit"
                 }
             },
             created() {
