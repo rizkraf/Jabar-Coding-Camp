@@ -46,17 +46,22 @@
                 </ul>
             </div>
             <label for="name">Nama</label>
-            <input type="text" name="name" ref="name" v-model="name">
+            <input type="text" name="name" ref="name" :disabled="buttonStatus == 'upload'" v-model="name">
             <label for="address">Alamat</label>
-            <textarea name="address" ref="address" v-model="address"></textarea>
+            <textarea name="address" ref="address" :disabled="buttonStatus == 'upload'" v-model="address"></textarea>
             <label for="no_hp">No HP</label>
-            <input type="number" name="no_hp" ref="noHp" v-model="noHp">
+            <input type="number" name="no_hp" ref="noHp" :disabled="buttonStatus == 'upload'" v-model="noHp">
 
             <div v-if="buttonStatus == 'submit'">
                 <input class="submit" type="submit" value="Submit">
             </div>
             <div v-else-if="buttonStatus == 'update'">
                 <input class="submit" type="button" @click="updateMember(idEdit)" value="Update">
+                <input class="submit" type="button" @click="cancelForm()" value="Cancel">
+            </div>
+            <div v-else-if="buttonStatus == 'upload'">
+                <input class="submit" type="file" name="photo" ref="photo">
+                <input class="submit" type="button" value="Upload">
                 <input class="submit" type="button" @click="cancelForm()" value="Cancel">
             </div>
         </form>
@@ -77,7 +82,7 @@
                 <td>
                     <button @click="editMember(member)">Edit</button>
                     <button @click="deleteMember(member.id)">Hapus</button>
-                    <button>Upload Foto</button>
+                    <button @click="uploadPhoto(member)">Upload Foto</button>
                 </td>
             </tr>
         </table>
@@ -97,7 +102,8 @@
                 members: [],
                 photoUrl: "http://demo-api-vue.sanbercloud.com",
                 buttonStatus: "submit",
-                idEdit: null
+                idEdit: null,
+                idUpload: null
             },
             methods: {
                 validationForm: function () {
@@ -227,6 +233,14 @@
                                 console.log(error)
                             })
                     }
+                },
+
+                uploadPhoto: function (member) {
+                    this.name = member.name
+                    this.address = member.address
+                    this.noHp = member.no_hp
+                    this.buttonStatus = "upload"
+                    this.idUpload = member.id
                 }
             },
             created() {
