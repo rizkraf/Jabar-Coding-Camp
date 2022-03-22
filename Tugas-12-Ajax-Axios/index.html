@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -33,6 +34,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="app">
         <form class="form" @submit.prevent="submitForm()">
@@ -54,7 +56,8 @@
         <table border="1">
             <tr v-for="member of members">
                 <td>
-                    <img width="100" :src="member.photo_profile ? photoUrl + member.photo_profile : 'https://dummyimage.com/16:9x1080'">
+                    <img width="100"
+                        :src="member.photo_profile ? photoUrl + member.photo_profile : 'https://dummyimage.com/16:9x1080'">
                 </td>
                 <td>
                     <h4>Nama: </h4><span> {{ member.name }} </span>
@@ -87,44 +90,77 @@
                 photoUrl: "http://demo-api-vue.sanbercloud.com"
             },
             methods: {
-                submitForm() {
+                validationForm: function () {
                     this.errors = []
 
-                    if(this.name.length < 5) {
+                    if (this.name.length < 5) {
                         this.errors.push("Nama minimal 5 karakter")
                         this.$refs.name.focus()
-                    } else if(this.address.length < 5) {
+                    } else if (this.address.length < 5) {
                         this.errors.push("Alamat minimal 5 karakter")
                         this.$refs.address.focus()
-                    } else if(this.noHp.length < 10 || this.noHp.length > 13) {
+                    } else if (this.noHp.length < 10 || this.noHp.length > 13) {
                         this.errors.push("No HP minimal 10 dan maksimal 13 karakter")
                         this.$refs.noHp.focus()
                     }
+                },
+                
+                clearForm: function() {
+                    this.name = ""
+                    this.address = ""
+                    this.noHp = ""
+                },
 
-                    if(this.errors.length === 0) {
-                        alert("Data anda telah diisi dengan benar")
+                submitForm: function () {
+                    this.validationForm()
+
+                    if (this.errors.length === 0) {
+
+                        let formData = new FormData()
+                        formData.append('name' , this.name)
+                        formData.append('address' , this.address)
+                        formData.append('no_hp' , this.noHp)
+
+                        const config = {
+                            method: "post",
+                            url: "http://demo-api-vue.sanbercloud.com/api/member",
+                            data: formData
+                        }
+
+                        axios(config)
+                            .then((response) => {
+                                this.clearForm()
+                                this.getMember()
+                                alert(response.data.message)
+                            })
+                            .catch((error) => {
+                                console.log(error)
+                            })
+
+                        
                     }
                 },
 
-                getMember: function() {
+                getMember: function () {
                     const config = {
                         method: "get",
                         url: "http://demo-api-vue.sanbercloud.com/api/member"
                     }
 
                     axios(config)
-                        .then( (response) => {
+                        .then((response) => {
                             this.members = response.data.members
                         })
-                        .catch( (error) => {
+                        .catch((error) => {
                             console.log(error)
                         })
                 },
             },
             created() {
-                    this.getMember()
-                }
+                this.getMember()
+            }
         })
     </script>
 </body>
+
 </html>
