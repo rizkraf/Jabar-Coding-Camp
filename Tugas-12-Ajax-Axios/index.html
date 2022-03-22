@@ -51,12 +51,13 @@
             <textarea name="address" ref="address" v-model="address"></textarea>
             <label for="no_hp">No HP</label>
             <input type="number" name="no_hp" ref="noHp" v-model="noHp">
+
             <div v-if="buttonStatus == 'submit'">
-                <button class="submit" type="submit">Submit</button>
+                <input class="submit" type="submit" value="Submit">
             </div>
             <div v-else-if="buttonStatus == 'update'">
-                <button class="submit">Update</button>
-                <button class="submit" @click="cancelForm()">Cancel</button>
+                <input class="submit" type="button" @click="updateMember(idEdit)" value="Update">
+                <input class="submit" type="button" @click="cancelForm()" value="Cancel">
             </div>
         </form>
 
@@ -95,7 +96,8 @@
                 errors: [],
                 members: [],
                 photoUrl: "http://demo-api-vue.sanbercloud.com",
-                buttonStatus: "submit"
+                buttonStatus: "submit",
+                idEdit: null
             },
             methods: {
                 validationForm: function () {
@@ -186,6 +188,7 @@
                     this.address = member.address
                     this.noHp = member.no_hp
                     this.buttonStatus = "update"
+                    this.idEdit = member.id
                 },
 
                 cancelForm: function () {
@@ -193,6 +196,37 @@
                     this.address = ""
                     this.noHp = ""
                     this.buttonStatus = "submit"
+                    this.idEdit = null
+                },
+
+                updateMember: function (id) {
+                    this.validationForm()
+
+                    if (this.errors.length === 0) {
+                        let formData = new FormData()
+                        formData.append('name', this.name)
+                        formData.append('address', this.address)
+                        formData.append('no_hp', this.noHp)
+
+                        let config = {
+                            method: "post",
+                            url: `http://demo-api-vue.sanbercloud.com/api/member/${id}`,
+                            params: {
+                                _method: "PUT"
+                            },
+                            data: formData
+                        }
+
+                        axios(config)
+                            .then((response) => {
+                                this.clearForm()
+                                this.getMember()
+                                alert(response.data.message)
+                            })
+                            .catch((error) => {
+                                console.log(error)
+                            })
+                    }
                 }
             },
             created() {
