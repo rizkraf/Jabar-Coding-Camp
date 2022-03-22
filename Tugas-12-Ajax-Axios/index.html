@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 12</title>
+    <style>
+        #app {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h4 {
+            display: inline-block;
+            margin: 0;
+        }
+
+        .form {
+            width: 300px;
+            padding: 10px;
+            background-color: #ffe19f;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+
+        .submit {
+            margin-top: 1rem;
+            padding: 0.5rem 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <form class="form" @submit.prevent="submitForm()">
+            <div v-if="errors.length">
+                <b>Tolong isi data anda dengan benar</b>
+                <ul>
+                    <li v-for="error in errors">{{ error }}</li>
+                </ul>
+            </div>
+            <label for="name">Nama</label>
+            <input type="text" name="name" ref="name" v-model="name">
+            <label for="address">Alamat</label>
+            <textarea name="address" ref="address" v-model="address"></textarea>
+            <label for="no_hp">No HP</label>
+            <input type="number" name="no_hp" ref="noHp" v-model="noHp">
+            <button class="submit" type="submit">Submit</button>
+        </form>
+
+        <table border="1">
+            <tr v-for="member of members">
+                <td>
+                    <img width="100" :src="member.photo_profile ? photoUrl + member.photo_profile : 'https://dummyimage.com/16:9x1080'">
+                </td>
+                <td>
+                    <h4>Nama: </h4><span> {{ member.name }} </span>
+                    <br>
+                    <h4>Alamat: </h4><span> {{ member.address}} </span>
+                    <br>
+                    <h4>No. HP</h4><span> {{ member.no_hp }} </span>
+                </td>
+                <td>
+                    <button>Edit</button>
+                    <button>Hapus</button>
+                    <button>Upload Foto</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                name: "",
+                address: "",
+                noHp: "",
+                errors: [],
+                members: [],
+                photoUrl: "http://demo-api-vue.sanbercloud.com"
+            },
+            methods: {
+                submitForm() {
+                    this.errors = []
+
+                    if(this.name.length < 5) {
+                        this.errors.push("Nama minimal 5 karakter")
+                        this.$refs.name.focus()
+                    } else if(this.address.length < 5) {
+                        this.errors.push("Alamat minimal 5 karakter")
+                        this.$refs.address.focus()
+                    } else if(this.noHp.length < 10 || this.noHp.length > 13) {
+                        this.errors.push("No HP minimal 10 dan maksimal 13 karakter")
+                        this.$refs.noHp.focus()
+                    }
+
+                    if(this.errors.length === 0) {
+                        alert("Data anda telah diisi dengan benar")
+                    }
+                },
+
+                getMember: function() {
+                    const config = {
+                        method: "get",
+                        url: "http://demo-api-vue.sanbercloud.com/api/member"
+                    }
+
+                    axios(config)
+                        .then( (response) => {
+                            this.members = response.data.members
+                        })
+                        .catch( (error) => {
+                            console.log(error)
+                        })
+                },
+            },
+            created() {
+                    this.getMember()
+                }
+        })
+    </script>
+</body>
+</html>
