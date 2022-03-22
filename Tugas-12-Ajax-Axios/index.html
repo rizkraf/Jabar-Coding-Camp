@@ -61,7 +61,7 @@
             </div>
             <div v-else-if="buttonStatus == 'upload'">
                 <input class="submit" type="file" name="photo" ref="photo">
-                <input class="submit" type="button" value="Upload">
+                <input class="submit" type="button" @click="submitPhoto(idUpload)" value="Upload">
                 <input class="submit" type="button" @click="cancelForm()" value="Cancel">
             </div>
         </form>
@@ -203,6 +203,7 @@
                     this.noHp = ""
                     this.buttonStatus = "submit"
                     this.idEdit = null
+                    this.idUpload = null
                 },
 
                 updateMember: function (id) {
@@ -241,6 +242,29 @@
                     this.noHp = member.no_hp
                     this.buttonStatus = "upload"
                     this.idUpload = member.id
+                },
+
+                submitPhoto: function (id) {
+                    let file = this.$refs.photo.files[0]
+
+                    let formData = new FormData()
+                    formData.append('photo_profile', file)
+
+                    let config = {
+                        method: "post",
+                        url: `http://demo-api-vue.sanbercloud.com/api/member/${id}/upload-photo-profile`,
+                        data: formData
+                    }
+
+                    axios(config)
+                        .then((response) => {
+                            this.cancelForm()
+                            this.getMember()
+                            alert(response.data.message)
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
                 }
             },
             created() {
