@@ -68,7 +68,7 @@
                 </td>
                 <td>
                     <button>Edit</button>
-                    <button>Hapus</button>
+                    <button @click="deleteMember(member.id)">Hapus</button>
                     <button>Upload Foto</button>
                 </td>
             </tr>
@@ -104,8 +104,8 @@
                         this.$refs.noHp.focus()
                     }
                 },
-                
-                clearForm: function() {
+
+                clearForm: function () {
                     this.name = ""
                     this.address = ""
                     this.noHp = ""
@@ -117,9 +117,9 @@
                     if (this.errors.length === 0) {
 
                         let formData = new FormData()
-                        formData.append('name' , this.name)
-                        formData.append('address' , this.address)
-                        formData.append('no_hp' , this.noHp)
+                        formData.append('name', this.name)
+                        formData.append('address', this.address)
+                        formData.append('no_hp', this.noHp)
 
                         const config = {
                             method: "post",
@@ -136,8 +136,6 @@
                             .catch((error) => {
                                 console.log(error)
                             })
-
-                        
                     }
                 },
 
@@ -155,6 +153,23 @@
                             console.log(error)
                         })
                 },
+
+                deleteMember: function(id) {
+                    const config = {
+                        method: "post",
+                        url: `http://demo-api-vue.sanbercloud.com/api/member/${id}`,
+                        params: { _method: "DELETE" }
+                    }
+
+                    axios(config)
+                        .then((response) => {
+                            this.getMember()
+                            alert(response.data.message)
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                        })
+                }
             },
             created() {
                 this.getMember()
