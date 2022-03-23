@@ -28,8 +28,8 @@
         <ul>
             <li>
                 {{ user.name }} ||
-                <button @click="$emit('edit-user', index)">Edit</button>
-                <button @click="$emit('delete-user', index)">Delete</button>
+                <button @click="$emit('edit-user')">Edit</button>
+                <button @click="$emit('delete-user')">Delete</button>
             </li>
         </ul>
     </template>
